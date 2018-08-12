@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { select, Store } from '@ngrx/store';
-import { SelectPerson } from '../store/actions/people.actions';
+import { SelectPerson, RemovePerson } from '../store/actions/people.actions';
 import { AppState } from '../store/reducers';
-import { getPeople } from '../store/reducers/people.reducer';
-import { EditPersonBsModalComponent } from './editPersonModal/edit-person-bs-modal.component';
+import { getPeople, Person } from '../store/reducers/people.reducer';
 
 @Component({
   selector: 'app-bootstrap-form',
@@ -14,10 +12,15 @@ import { EditPersonBsModalComponent } from './editPersonModal/edit-person-bs-mod
 export class BootstrapFormComponent {
   public people$ = this.store.pipe(select(getPeople));
 
-  constructor(private store: Store<AppState>, private modalService: NgbModal) { }
+  constructor(private store: Store<AppState>) { }
 
-  public startAddPerson() {
-    this.store.dispatch(new SelectPerson());
-    this.modalService.open(EditPersonBsModalComponent);
+  public startEditPerson(person?: Person) {
+    const id = person && person.id;
+    this.store.dispatch(new SelectPerson({ id }));
+  }
+
+  public startRemovePerson(person?: Person) {
+    const id = person && person.id;
+    this.store.dispatch(new RemovePerson({ id }));
   }
 }

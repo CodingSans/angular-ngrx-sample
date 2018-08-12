@@ -13,7 +13,7 @@
       <h1>People</h1>
     </div>
     <div class="col text-right">
-      <button class="btn btn-primary" (click)="startAddPerson()">App person</button>
+      <button class="btn btn-primary" (click)="startEditPerson()">Add person</button>
     </div>
   </div>
 
@@ -24,6 +24,7 @@
         <th scope="col">Name</th>
         <th scope="col">Birthplace</th>
         <th scope="col">Birthdate</th>
+        <th scope="col">Actions</th>
       </tr>
     </thead>
     <tbody *ngIf="people$ | async as people">
@@ -31,7 +32,11 @@
         <th scope="row">{{ person.id }}</th>
         <td>{{ person.name }}</td>
         <td>{{ person.birthPlace }}</td>
-        <td>{{ person.birthDate }}</td>
+        <td>{{ person.birthDate | date:'yyyy-MM-dd' }}</td>
+        <td class="text-nowrap">
+          <button class="btn btn-outline-danger" (click)="startRemovePerson(person)">Remove</button>
+          <button class="btn btn-outline-primary" (click)="startEditPerson(person)">Edit</button>
+        </td>
       </tr>
     </tbody>
   </table>

@@ -1,44 +1,68 @@
-import { PeopleAction, PeopleActionTypes } from '../actions/people.actions';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
+import { findIndex } from 'lodash';
 import { FormGroupState } from 'ngrx-forms';
-import { IEditPersonForm, editPersonInitialState, NEW_PERSON } from './edit-person.reducer';
+import { PeopleAction, PeopleActionTypes } from '../actions/people.actions';
+import { editPersonFormReducer, editPersonInitialState, IEditPersonForm } from './edit-person.reducer';
+import { PeopleDao } from '../../shared/dao/people.dao';
 
 export interface Person {
-  id?: number;
+  id?: string;
   name: string;
   birthPlace: string;
   birthDate: string;
 }
 
+export interface IForms {
+  editPerson: FormGroupState<IEditPersonForm>;
+}
+
 export interface IPeopleReducer {
-  forms: {
-    editPerson: FormGroupState<IEditPersonForm>;
-  };
+  forms: IForms;
   list: Person[];
   selected: Person | null;
 }
+
+const dao = new PeopleDao();
 
 const initialState: IPeopleReducer = {
   forms: {
     editPerson: editPersonInitialState,
   },
-  list: [],
+  list: dao.findAll(),
   selected: null,
 };
 
+const formsReducer = combineReducers<IForms>({
+  editPerson: editPersonFormReducer,
+});
+
 export function peopleReducer(state: IPeopleReducer = initialState, action: PeopleAction) {
+  const forms = formsReducer(state.forms, action);
+
+  if (state.forms !== forms) {
+    state = { ...state, forms };
+  }
+
   switch (action.type) {
     case PeopleActionTypes.ADD_PERSON_SUCCESS: {
       const { person } = action.payload;
       return { ...state, list: [...state.list, person] };
     }
-    case PeopleActionTypes.EDIT_PERSON: {
+    case PeopleActionTypes.SELECT_PERSON_SUCCESS: {
       const { person } = action.payload;
       return { ...state, selected: person };
     }
     case PeopleActionTypes.EDIT_PERSON_SUCCESS: {
       const { person } = action.payload;
-      return { ...state, selected: null, list: [...state.list, person] };
+      const currentIndex = findIndex(state.list, (p) => p.id === person.id);
+      if (currentIndex === -1) {
+        return { ...state, selected: null, list: [...state.list, person] };
+      }
+      return { ...state, selected: null, list: [...state.list.slice(0, currentIndex), person, ...state.list.slice(currentIndex + 1)] };
+    }
+    case PeopleActionTypes.REMOVE_PERSON_SUCCESS: {
+      const { id } = action.payload;
+      return { ...state, selected: null, list: state.list.filter(p => p.id !== id) };
     }
     default: {
       return { ...state };

@@ -1,29 +1,47 @@
 <div class="modal-header">
   <h4 class="modal-title">Hi there!</h4>
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div class="modal-body">
   <div *ngIf="formState$ | async as formState">
-    <form novalidate [ngrxFormState]="formState">
+    <form novalidate [ngrxFormState]="formState" (submit)="submitPerson(formState)">
       <div class="form-group">
-        <label for="inputName">Name</label>
-        <input type="text" class="form-control" [ngrxFormControlState]="formState.controls.name" id="inputName" aria-describedby="emailHelp" placeholder="Name">
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        <label>Name</label>
+        <input type="text" class="form-control" [ngrxFormControlState]="formState.controls.name"
+          placeholder="Name">
       </div>
       <div class="form-group">
         <label for="inputBirthPlace">Birth place</label>
-        <input type="text" class="form-control" [ngrxFormControlState]="formState.controls.birthPlace" id="inputBirthPlace" placeholder="Birth place">
+        <select class="custom-select" [ngrxFormControlState]="formState.controls.birthPlace" id="inputBirthPlace">
+          <option value="" disabled selected>Select a country</option>
+          <option *ngFor="let country of countries$ | async" value="{{ country.code }}">{{ country.name }}</option>
+        </select>
       </div>
       <div class="form-group">
-        <label for="inputBirthDate">Birth date</label>
-        <input type="text" class="form-control" [ngrxFormControlState]="formState.controls.birthDate" id="inputBirthDate" placeholder="Birth date">
+        <label>Birth date</label>
+        <div class="input-group">
+          <input class="form-control"  [ngrxFormControlState]="formState.controls.birthDate"
+            [ngrxValueConverter]="dateToString"
+            name="dp" placeholder="yyyy-mm-dd" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+              <i class="fa fa-calendar"></i>
+            </button>
+          </div>
+        </div>
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <div class="row">
+        <div class="col">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <div class="col text-right">
+          <ng-container *ngIf="selected$ | async as selected">
+            <button type="button" class="btn btn-outline-danger" (click)="removePerson(selected)">Remove</button>
+          </ng-container>
+        </div>
+      </div>
     </form>
   </div>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
 </div>
