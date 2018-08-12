@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <h4 class="modal-title">Hi there!</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div *ngIf="formState$ | async as formState">
+    <form novalidate [ngrxFormState]="formState">
+      <div class="form-group">
+        <label for="inputName">Name</label>
+        <input type="text" class="form-control" [ngrxFormControlState]="formState.controls.name" id="inputName" aria-describedby="emailHelp" placeholder="Name">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div>
+      <div class="form-group">
+        <label for="inputBirthPlace">Birth place</label>
+        <input type="text" class="form-control" [ngrxFormControlState]="formState.controls.birthPlace" id="inputBirthPlace" placeholder="Birth place">
+      </div>
+      <div class="form-group">
+        <label for="inputBirthDate">Birth date</label>
+        <input type="text" class="form-control" [ngrxFormControlState]="formState.controls.birthDate" id="inputBirthDate" placeholder="Birth date">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>

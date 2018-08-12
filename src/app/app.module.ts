@@ -5,13 +5,17 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BootstrapFormComponent } from './bootstrap-form/bootstrap-form.component';
+import { BootstrapFormModule } from './bootstrap-form/bootstrap-form.module';
+import { EditPersonBsModalComponent } from './bootstrap-form/editPersonModal/edit-person-bs-modal.component';
 import { MaterialFormComponent } from './material-form/material-form.component';
+import { SharedModule } from './shared/shared.module';
 import { reducers } from './store/reducers';
 import { customSerializerProvider } from './store/reducers/customSerializer';
+import { EffectsModule } from '@ngrx/effects';
+import { PeopleEffects } from './store/effects/people.effects';
 
 @NgModule({
-  declarations: [AppComponent, MaterialFormComponent, BootstrapFormComponent],
+  declarations: [AppComponent, MaterialFormComponent],
   imports: [
     BrowserModule,
     StoreModule.forRoot(reducers),
@@ -22,8 +26,14 @@ import { customSerializerProvider } from './store/reducers/customSerializer';
       maxAge: 25,
     }),
     AppRoutingModule,
+    SharedModule,
+    BootstrapFormModule,
+    EffectsModule.forRoot([PeopleEffects]),
   ],
   providers: [customSerializerProvider],
   bootstrap: [AppComponent],
+  entryComponents: [
+    EditPersonBsModalComponent,
+  ]
 })
 export class AppModule {}

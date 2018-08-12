@@ -1,3 +1,38 @@
-<p>
-  bootstrap-form works!
-</p>
+
+<nav class="navbar navbar-light bg-light justify-content-between">
+  <a class="navbar-brand">
+      <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+      Bootstrap
+    </a>
+  <button class="btn btn-outline-success my-2 my-sm-0" routerLink="/material" type="button">Go to Material Design Form</button>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>People</h1>
+    </div>
+    <div class="col text-right">
+      <button class="btn btn-primary" (click)="startAddPerson()">App person</button>
+    </div>
+  </div>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Birthplace</th>
+        <th scope="col">Birthdate</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="people$ | async as people">
+      <tr *ngFor="let person of people">
+        <th scope="row">{{ person.id }}</th>
+        <td>{{ person.name }}</td>
+        <td>{{ person.birthPlace }}</td>
+        <td>{{ person.birthDate }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
