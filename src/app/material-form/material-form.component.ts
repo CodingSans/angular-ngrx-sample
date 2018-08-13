@@ -17,6 +17,6 @@ export class MaterialFormComponent {
 
   startEditPerson(person) {
     const id = person && person.id;
-    this.store.dispatch(new SelectPerson({ id, type: 'material' }));
+    this.store.dispatch(new SelectPerson({ id }));
   }
 }

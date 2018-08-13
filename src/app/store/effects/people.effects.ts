@@ -14,19 +14,20 @@ import { EditPerson, EditPersonSuccess, PeopleActionTypes, RemovePerson,
 import { AppState } from '../reducers';
 import { NEW_PERSON, PERSON_EDIT_FORM_ID } from '../reducers/edit-person.reducer';
 import { getSelectedPerson } from '../reducers/people.reducer';
+import { getRouterState } from '../reducers/customSerializer';
 
 @Injectable()
 export class PeopleEffects {
   @Effect()
   selectPerson$: Observable<Action> = this.actions$.pipe(
     ofType<SelectPerson>(PeopleActionTypes.SELECT_PERSON),
-    map(action => action.payload),
-    switchMap((payload) => {
-      return this.peopleService.selectPerson(payload.id)
+    map(action => action.payload.id),
+    switchMap((id) => {
+      return this.peopleService.selectPerson(id)
         .pipe(
           switchMap((person) => {
             return [
-              new SelectPersonSuccess({ person, type: payload.type }),
+              new SelectPersonSuccess({ person }),
               new SetValueAction(PERSON_EDIT_FORM_ID, person)
             ];
           })
@@ -37,17 +38,17 @@ export class PeopleEffects {
   @Effect({ dispatch: false })
   selectPersonSuccess$ = this.actions$.pipe(
     ofType<SelectPersonSuccess>(PeopleActionTypes.SELECT_PERSON_SUCCESS),
-    map(action => action.payload.type),
-    tap((modalType) => {
-      switch (modalType) {
-        case 'bootstrap':
+    withLatestFrom(this.store.pipe(select(getRouterState))),
+    tap(([_, { url }]) => {
+      switch (url) {
+        case '/bootstrap':
           return this.modalService.open(EditPersonBsModalComponent);
-        case 'material':
+        case '/material':
           return this.dialog.open(EditPersonMatModalComponent, {
-            width: '250px',
+            width: '300px',
           });
         default:
-          console.error(`Modal type '${modalType}' not found!`);
+          console.error(`Modal type for route '${url}' not found!`);
       }
     })
   );
