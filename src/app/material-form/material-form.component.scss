@@ -1,0 +1,11 @@
+table[mat-table] {
+  width: 100%;
+
+  & td {
+    vertical-align: middle;
+
+    &.column-shrink {
+      width: 1%;
+    }
+  }
+}

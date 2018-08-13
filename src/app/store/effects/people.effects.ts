@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, select, Store } from '@ngrx/store';
@@ -6,6 +7,7 @@ import { ResetAction, SetValueAction } from 'ngrx-forms';
 import { Observable } from 'rxjs';
 import { map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { EditPersonBsModalComponent } from '../../bootstrap-form/editPersonModal/edit-person-bs-modal.component';
+import { EditPersonMatModalComponent } from '../../material-form/editPersonModal/edit-person-mat-modal.component';
 import { PeopleService } from '../../shared/services/people.service';
 import { EditPerson, EditPersonSuccess, PeopleActionTypes, RemovePerson,
   RemovePersonSuccess, SelectPerson, SelectPersonSuccess } from '../actions/people.actions';
@@ -18,13 +20,13 @@ export class PeopleEffects {
   @Effect()
   selectPerson$: Observable<Action> = this.actions$.pipe(
     ofType<SelectPerson>(PeopleActionTypes.SELECT_PERSON),
-    map(action => action.payload && action.payload.id),
-    switchMap((id) => {
-      return this.peopleService.selectPerson(id)
+    map(action => action.payload),
+    switchMap((payload) => {
+      return this.peopleService.selectPerson(payload.id)
         .pipe(
           switchMap((person) => {
             return [
-              new SelectPersonSuccess({ person }),
+              new SelectPersonSuccess({ person, type: payload.type }),
               new SetValueAction(PERSON_EDIT_FORM_ID, person)
             ];
           })
@@ -33,10 +35,20 @@ export class PeopleEffects {
   );
 
   @Effect({ dispatch: false })
-  selectPersonSuccess$: Observable<Action> = this.actions$.pipe(
+  selectPersonSuccess$ = this.actions$.pipe(
     ofType<SelectPersonSuccess>(PeopleActionTypes.SELECT_PERSON_SUCCESS),
-    tap(() => {
-      return this.modalService.open(EditPersonBsModalComponent);
+    map(action => action.payload.type),
+    tap((modalType) => {
+      switch (modalType) {
+        case 'bootstrap':
+          return this.modalService.open(EditPersonBsModalComponent);
+        case 'material':
+          return this.dialog.open(EditPersonMatModalComponent, {
+            width: '250px',
+          });
+        default:
+          console.error(`Modal type '${modalType}' not found!`);
+      }
     })
   );
 
@@ -93,5 +105,6 @@ export class PeopleEffects {
     private store: Store<AppState>,
     private peopleService: PeopleService,
     private modalService: NgbModal,
+    public dialog: MatDialog,
     private actions$: Actions) {}
 }
