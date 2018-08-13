@@ -20,7 +20,6 @@
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th scope="col">Id</th>
         <th scope="col">Name</th>
         <th scope="col">Birthplace</th>
         <th scope="col">Birthdate</th>
@@ -29,7 +28,6 @@
     </thead>
     <tbody *ngIf="people$ | async as people">
       <tr *ngFor="let person of people">
-        <td>{{ person.id }}</td>
         <td>{{ person.name }}</td>
         <td>{{ person.birthPlace }}</td>
         <td>{{ person.birthDate | date:'yyyy-MM-dd' }}</td>

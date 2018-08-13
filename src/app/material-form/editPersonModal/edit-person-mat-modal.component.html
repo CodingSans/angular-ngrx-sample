@@ -28,7 +28,7 @@
   <mat-dialog-actions>
     <div class="d-flex justify-content-end w-100">
       <div *ngIf="selected$ | async as selected" class="mr-auto">
-        <button mat-button type="button" (click)="removePerson(selected)">Remove</button>
+        <button mat-button type="button" *ngIf="selected.id" (click)="removePerson(selected)">Remove</button>
       </div>
       <button mat-button type="button" (click)="submitPerson(formState)">Save</button>
     </div>
