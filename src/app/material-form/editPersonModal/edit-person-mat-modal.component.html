@@ -4,11 +4,11 @@
 <ng-container *ngIf="formState$ | async as formState">
   <mat-dialog-content>
     <form novalidate [ngrxFormState]="formState">
-      <mat-form-field>
+      <mat-form-field class="w-100">
         <input matInput placeholder="Name" [ngrxFormControlState]="formState.controls.name">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="w-100">
         <mat-select placeholder="Birth place" [ngrxFormControlState]="formState.controls.birthPlace">
           <mat-option *ngFor="let country of countries$ | async" [value]="country.code">
             {{ country.name }}
@@ -16,7 +16,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="w-100">
         <input matInput [matDatepicker]="picker" placeholder="Birth date"
           [ngrxValueConverter]="dateToString"
           [ngrxFormControlState]="formState.controls.birthDate">
