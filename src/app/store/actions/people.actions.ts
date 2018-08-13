@@ -32,12 +32,12 @@ export class AddPersonFailed implements Action {
 
 export class SelectPerson implements Action {
   readonly type = PeopleActionTypes.SELECT_PERSON;
-  constructor(public payload?: { id: string, type: 'bootstrap' | 'material' }) {}
+  constructor(public payload?: { id: string }) {}
 }
 
 export class SelectPersonSuccess implements Action {
   readonly type = PeopleActionTypes.SELECT_PERSON_SUCCESS;
-  constructor(public payload?: { person: Person, type: 'bootstrap' | 'material' }) {}
+  constructor(public payload?: { person: Person }) {}
 }
 
 export class EditPerson implements Action {

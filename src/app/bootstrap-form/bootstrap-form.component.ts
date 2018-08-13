@@ -16,6 +16,6 @@ export class BootstrapFormComponent {
 
   public startEditPerson(person?: Person) {
     const id = person && person.id;
-    this.store.dispatch(new SelectPerson({ id, type: 'bootstrap' }));
+    this.store.dispatch(new SelectPerson({ id }));
   }
 }
