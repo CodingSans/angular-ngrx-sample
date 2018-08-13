@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { NgbDateAdapter, NgbDateNativeAdapter, NgbDatepickerModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgrxFormsModule } from 'ngrx-forms';
-import { CountryService } from './country.service';
-import { PeopleService } from './people.service';
+import { CountryService } from './services/country.service';
+import { PeopleService } from './services/people.service';
 import { PeopleDao } from './dao/people.dao';
 
 @NgModule({

@@ -32,14 +32,15 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col">
-          <button type="submit" class="btn btn-primary">Submit</button>
+      <div class="d-flex justify-content-end">
+        <div *ngIf="selected$ | async as selected" class="mr-auto">
+          <button type="button" class="btn btn-outline-danger" *ngIf="selected.id" (click)="removePerson(selected)">
+            <i class="fa fa-times"></i> Remove
+          </button>
         </div>
-        <div class="col text-right">
-          <ng-container *ngIf="selected$ | async as selected">
-            <button type="button" class="btn btn-outline-danger" (click)="removePerson(selected)">Remove</button>
-          </ng-container>
+
+        <div>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Add</button>
         </div>
       </div>
     </form>

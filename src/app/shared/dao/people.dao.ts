@@ -3,9 +3,11 @@ import { v4 } from 'uuid';
 import { Person } from '../../store/reducers/people.reducer';
 import { AbstractDao } from './abstract.dao';
 
-const STORAGE = 'codingsans_example-storage';
-
 export class PeopleDao extends AbstractDao<Person> {
+  constructor() {
+    super('PEOPLE');
+  }
+
   findAll() {
     return this._readAll();
   }
@@ -59,7 +61,7 @@ export class PeopleDao extends AbstractDao<Person> {
   }
 
   private _readAll(): Person[] {
-    const collection = localStorage.getItem(STORAGE);
+    const collection = localStorage.getItem(this.collectionName);
     if (collection) {
       return JSON.parse(collection);
     }
@@ -67,6 +69,6 @@ export class PeopleDao extends AbstractDao<Person> {
   }
 
   private _writeAll(data: any[]) {
-    localStorage.setItem(STORAGE, JSON.stringify(data));
+    localStorage.setItem(this.collectionName, JSON.stringify(data));
   }
 }

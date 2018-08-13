@@ -6,7 +6,7 @@ import { ResetAction, SetValueAction } from 'ngrx-forms';
 import { Observable } from 'rxjs';
 import { map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { EditPersonBsModalComponent } from '../../bootstrap-form/editPersonModal/edit-person-bs-modal.component';
-import { PeopleService } from '../../shared/people.service';
+import { PeopleService } from '../../shared/services/people.service';
 import { EditPerson, EditPersonSuccess, PeopleActionTypes, RemovePerson,
   RemovePersonSuccess, SelectPerson, SelectPersonSuccess } from '../actions/people.actions';
 import { AppState } from '../reducers';
@@ -19,11 +19,10 @@ export class PeopleEffects {
   selectPerson$: Observable<Action> = this.actions$.pipe(
     ofType<SelectPerson>(PeopleActionTypes.SELECT_PERSON),
     map(action => action.payload && action.payload.id),
-    switchMap((id: string | undefined) => {
+    switchMap((id) => {
       return this.peopleService.selectPerson(id)
         .pipe(
           switchMap((person) => {
-            console.log(person);
             return [
               new SelectPersonSuccess({ person }),
               new SetValueAction(PERSON_EDIT_FORM_ID, person)
@@ -37,8 +36,7 @@ export class PeopleEffects {
   selectPersonSuccess$: Observable<Action> = this.actions$.pipe(
     ofType<SelectPersonSuccess>(PeopleActionTypes.SELECT_PERSON_SUCCESS),
     tap(() => {
-      this.modalService.open(EditPersonBsModalComponent);
-
+      return this.modalService.open(EditPersonBsModalComponent);
     })
   );
 

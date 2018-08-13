@@ -4,16 +4,18 @@
       <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
       Bootstrap
     </a>
-  <button class="btn btn-outline-success my-2 my-sm-0" routerLink="/material" type="button">Go to Material Design Form</button>
+  <button class="btn btn-outline-success my-2 my-sm-0" routerLink="/material" type="button">
+    <i class="fa fa-link"></i> Go to Material Design Form
+  </button>
 </nav>
 
 <div class="container">
-  <div class="row">
-    <div class="col">
+  <div class="d-flex justify-content-between mt-3 mb-3">
+    <div>
       <h1>People</h1>
     </div>
-    <div class="col text-right">
-      <button class="btn btn-primary" (click)="startEditPerson()">Add person</button>
+    <div class="d-flex align-items-center">
+      <button class="btn btn-primary" (click)="startEditPerson()"><i class="fa fa-plus"></i> Add person</button>
     </div>
   </div>
 
@@ -24,18 +26,17 @@
         <th scope="col">Name</th>
         <th scope="col">Birthplace</th>
         <th scope="col">Birthdate</th>
-        <th scope="col">Actions</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody *ngIf="people$ | async as people">
       <tr *ngFor="let person of people">
-        <th scope="row">{{ person.id }}</th>
+        <td>{{ person.id }}</td>
         <td>{{ person.name }}</td>
         <td>{{ person.birthPlace }}</td>
         <td>{{ person.birthDate | date:'yyyy-MM-dd' }}</td>
-        <td class="text-nowrap">
-          <button class="btn btn-outline-danger" (click)="startRemovePerson(person)">Remove</button>
-          <button class="btn btn-outline-primary" (click)="startEditPerson(person)">Edit</button>
+        <td class="text-nowrap column-shrink">
+          <button class="btn btn-outline-primary" (click)="startEditPerson(person)"><i class="fa fa-pencil"></i></button>
         </td>
       </tr>
     </tbody>

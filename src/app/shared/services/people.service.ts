@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { NEW_PERSON } from '../store/reducers/edit-person.reducer';
-import { Person } from '../store/reducers/people.reducer';
-import { PeopleDao } from './dao/people.dao';
+import { NEW_PERSON } from '../../store/reducers/edit-person.reducer';
+import { Person } from '../../store/reducers/people.reducer';
+import { PeopleDao } from '../dao/people.dao';
 
 @Injectable()
 export class PeopleService {

@@ -1,4 +1,12 @@
+const PREFIX = 'CODINGSANS_EXAMPLE_';
+
 export abstract class AbstractDao<T> {
+  protected collectionName: string;
+
+  constructor(collectionName: string) {
+    this.collectionName = PREFIX + collectionName;
+  }
+
   abstract findAll(): T[];
 
   abstract findById(id: string): T;

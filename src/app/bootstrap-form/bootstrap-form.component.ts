@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { SelectPerson, RemovePerson } from '../store/actions/people.actions';
+import { SelectPerson, RemovePerson, PeopleActionTypes } from '../store/actions/people.actions';
 import { AppState } from '../store/reducers';
 import { getPeople, Person } from '../store/reducers/people.reducer';
 
@@ -17,10 +17,5 @@ export class BootstrapFormComponent {
   public startEditPerson(person?: Person) {
     const id = person && person.id;
     this.store.dispatch(new SelectPerson({ id }));
-  }
-
-  public startRemovePerson(person?: Person) {
-    const id = person && person.id;
-    this.store.dispatch(new RemovePerson({ id }));
   }
 }
