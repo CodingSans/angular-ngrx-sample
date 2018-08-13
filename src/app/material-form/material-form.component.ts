@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../store/reducers';
-import { getPeople } from '../store/reducers/people.reducer';
+import { getPeople, Person } from '../store/reducers/people.reducer';
 import { SelectPerson } from '../store/actions/people.actions';
 
 @Component({
@@ -15,7 +15,7 @@ export class MaterialFormComponent {
 
   constructor(private store: Store<AppState>) { }
 
-  startEditPerson(person) {
+  startEditPerson(person?: Person) {
     const id = person && person.id;
     this.store.dispatch(new SelectPerson({ id }));
   }
