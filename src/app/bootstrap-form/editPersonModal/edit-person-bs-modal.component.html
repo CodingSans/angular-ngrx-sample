@@ -1,0 +1,48 @@
+<div class="modal-header">
+  <h4 class="modal-title">Hi there!</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div *ngIf="formState$ | async as formState">
+    <form novalidate [ngrxFormState]="formState" (submit)="submitPerson(formState)">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" class="form-control" [ngrxFormControlState]="formState.controls.name"
+          placeholder="Name">
+      </div>
+      <div class="form-group">
+        <label for="inputBirthPlace">Birth place</label>
+        <select class="custom-select" [ngrxFormControlState]="formState.controls.birthPlace" id="inputBirthPlace">
+          <option value="" disabled selected>Select a country</option>
+          <option *ngFor="let country of countries$ | async" value="{{ country.code }}">{{ country.name }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Birth date</label>
+        <div class="input-group">
+          <input class="form-control"  [ngrxFormControlState]="formState.controls.birthDate"
+            [ngrxValueConverter]="dateToString"
+            name="dp" placeholder="yyyy-mm-dd" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+              <i class="fa fa-calendar"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end">
+        <div *ngIf="selected$ | async as selected" class="mr-auto">
+          <button type="button" class="btn btn-outline-danger" *ngIf="selected.id" (click)="removePerson(selected)">
+            <i class="fa fa-times"></i> Remove
+          </button>
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Add</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
