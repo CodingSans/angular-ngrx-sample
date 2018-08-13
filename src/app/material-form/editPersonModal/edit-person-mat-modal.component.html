@@ -1,0 +1,36 @@
+<ng-container *ngIf="selected$ | async as selected">
+  <h2 mat-dialog-title>{{ selected.id ? 'Edit' : 'Add' }} person</h2>
+</ng-container>
+<ng-container *ngIf="formState$ | async as formState">
+  <mat-dialog-content>
+    <form novalidate [ngrxFormState]="formState">
+      <mat-form-field>
+        <input matInput placeholder="Name" [ngrxFormControlState]="formState.controls.name">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select placeholder="Birth place" [ngrxFormControlState]="formState.controls.birthPlace">
+          <mat-option *ngFor="let country of countries$ | async" [value]="country.code">
+            {{ country.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Birth date"
+          [ngrxValueConverter]="dateToString"
+          [ngrxFormControlState]="formState.controls.birthDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="d-flex justify-content-end w-100">
+      <div *ngIf="selected$ | async as selected" class="mr-auto">
+        <button mat-button type="button" (click)="removePerson(selected)">Remove</button>
+      </div>
+      <button mat-button type="button" (click)="submitPerson(formState)">Save</button>
+    </div>
+  </mat-dialog-actions>
+</ng-container>

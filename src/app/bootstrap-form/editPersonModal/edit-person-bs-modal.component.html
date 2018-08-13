@@ -1,5 +1,8 @@
 <div class="modal-header">
-  <h4 class="modal-title">Hi there!</h4>
+  <ng-container *ngIf="selected$ | async as selected">
+    <h4 class="modal-title">{{ selected.id ? 'Edit' : 'Add' }} person</h4>
+  </ng-container>
+
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -32,15 +35,15 @@
           </div>
         </div>
       </div>
-      <div class="d-flex justify-content-end">
-        <div *ngIf="selected$ | async as selected" class="mr-auto">
+      <div class="d-flex justify-content-between">
+        <div *ngIf="selected$ | async as selected">
           <button type="button" class="btn btn-outline-danger" *ngIf="selected.id" (click)="removePerson(selected)">
             <i class="fa fa-times"></i> Remove
           </button>
         </div>
 
         <div>
-          <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Add</button>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Save</button>
         </div>
       </div>
     </form>
